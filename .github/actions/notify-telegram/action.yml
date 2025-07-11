@@ -1,0 +1,21 @@
+name: 'Notify Telegram'
+description: 'Send build status notifications to Telegram'
+inputs:
+  status:
+    required: true
+    description: 'Status message (✅ Success or ❌ Failure)'
+  telegram_token:
+    required: true
+    description: 'Telegram bot token'
+  chat_ids:
+    required: true
+    description: 'Comma-separated list of chat IDs'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Run notification script
+      shell: bash
+      run: |
+        chmod +x ${{ github.action_path }}/entrypoint.sh
+        ${{ github.action_path }}/entrypoint.sh "${{ inputs.status }}" "${{ inputs.telegram_token }}" "${{ inputs.chat_ids }}"
